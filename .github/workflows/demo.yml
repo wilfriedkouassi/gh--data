@@ -6,8 +6,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    outputs:
-      script-file: ${{steps.publish.outputs.script-file}}
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -20,6 +18,8 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
+    outputs:
+      script-file: ${{steps.publish.outputs.script-file}}
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -33,7 +33,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with: 
-          name: dist-flies
+          name: dist-files
           path: dist
   deploy:
     needs: build
@@ -42,7 +42,7 @@ jobs:
       - name: Get build artifacts
         uses: actions/download-artifact@v3
         with: 
-          name: dist-flies
+          name: dist-files
       - name: Output contents
         run: ls
       - name: Output filename
